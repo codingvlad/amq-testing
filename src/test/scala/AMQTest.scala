@@ -6,29 +6,29 @@ import akka.camel.CamelExtension
 
 class AMQTest extends FunSuite with BeforeAndAfter {
 
+  val brokerUrl = "tcp://localhost:61616"
   // Create a broker and start it
   val broker = new BrokerService()
   broker.setBrokerName("amq-broker")
-  broker.addConnector("tcp://localhost:61616")
+  broker.addConnector(brokerUrl)
   broker.start()
 
   //Setup akka and camel component
   val actorSystem = ActorSystem("actor-test-system")
   val system = CamelExtension(actorSystem)
-  val amqUrl = s"nio://localhost:61616"
-  system.context.addComponent("activemq", ActiveMQComponent.activeMQComponent(amqUrl))
+  system.context.addComponent("activemq", ActiveMQComponent.activeMQComponent(brokerUrl))
 
   test("Tests broker is persistent") {
     //Persistence is activated by default
     assert(broker.isPersistent)
   }
   test("Test client connection uppon creation") {
-    val testConsumer = actorSystem.actorOf(Props[AMQClient])
+    val testConsumer1 = actorSystem.actorOf(Props[AMQClient])
     val view = broker.getAdminView
     Thread.sleep(500)
     assert(view.getTotalConsumerCount == 1)
   }
-  test("Test producer connection after creation") {
+  test("Test the queue creation") {
     assert(true)
   }
   test("Test peristence store") {

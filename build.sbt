@@ -13,6 +13,8 @@ libraryDependencies ++= {
     "org.apache.activemq" % "activemq-all" % amqV,
     "org.apache.activemq" % "activemq-broker" % amqV,
     "org.apache.activemq" % "activemq-client" % amqV,
-    "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+    "org.apache.activemq" % "activemq-pool" % amqV,
+    "org.scalatest" %% "scalatest" % "3.0.0" % "test",
+    "io.spray" %%  "spray-json" % "1.3.2"
   )
 }
